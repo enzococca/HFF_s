@@ -153,7 +153,7 @@ if install_libraries:
                      ','.join(install_libraries)])
             else:
                 error = traceback.format_exc()
-                QgsMessageLog.logMessage(error, tag="PyArchInit", level=Qgis.Critical)
+                QgsMessageLog.logMessage(error, tag="HFF", level=Qgis.Critical)
     else:
         pass
 

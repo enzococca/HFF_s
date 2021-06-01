@@ -103,6 +103,8 @@ class hff_system__Folder_installation(object):
         
         home_R_export_path = '{}{}{}'.format(self.HOME, os.sep, 'HFF_R_export')
         self.OS_UTILITY.create_dir(home_image_export_path)
+    
+    
     def installConfigFile(self, path):
         config_copy_from_path_rel = os.path.join(os.sep, 'dbfiles', 'config.cfg')
         config_copy_from_path = '{}{}'.format(self.RESOURCES_PATH, config_copy_from_path_rel)
