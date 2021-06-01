@@ -43,7 +43,7 @@ from .tabs.Image_viewer import Main
 from .tabs.Images_directory_export import hff_system__Images_directory_export
 from .tabs.Excel_export import hff_system__excel_export
 from .tabs.Site import hff_system__Site
-
+from .tabs.PRINTMAP import hff_PRINTMAP
 from .gui.hff_system_ConfigDialog import HFF_systemDialog_Config
 from .gui.dbmanagment import hff_system__dbmanagment
 from .gui.hff_system_InfoDialog import HFF_systemDialog_Info
@@ -144,6 +144,22 @@ class HffPlugin_s(object):
         self.toolBar.addWidget(self.siteToolButton)
         self.toolBar.addSeparator()
         
+        self.manageToolButton = QToolButton(self.toolBar)
+            #self.manageToolButton.setPopupMode(QToolButton.MenuButtonPopup)
+
+        icon_print = '{}{}'.format(filepath, os.path.join(os.sep, 'resources', 'icons', 'print_map.png'))
+        self.actionPrint = QAction(QIcon(icon_print), "Make your Map", self.iface.mainWindow())
+        self.actionPrint.setWhatsThis("Make your Map")
+        self.actionPrint.triggered.connect(self.runPrint)
+        
+       
+        self.manageToolButton.addActions(
+            [self.actionPrint])
+        self.manageToolButton.setDefaultAction(self.actionPrint)
+
+        self.toolBar.addWidget(self.manageToolButton)
+
+        self.toolBar.addSeparator()
         
         self.emeanaToolButton = QToolButton(self.toolBar)
         #self.emeanaToolButton.setPopupMode(QToolButton.MenuButtonPopup)
@@ -278,6 +294,9 @@ class HffPlugin_s(object):
         
         
         self.iface.addPluginToMenu("HFF - Survey Terrestrial Archaeological GIS Tools", self.actionSite)
+        
+        self.iface.addPluginToMenu("HFF - Survey Terrestrial Archaeological GIS Tools", self.actionPrint)
+        
         self.iface.addPluginToMenu("HFF - Survey Terrestrial Archaeological GIS Tools", self.actionEamena)
         
         self.iface.addPluginToMenu("HFF - Media manager GIS Tools", self.actionimageViewer)
@@ -293,7 +312,8 @@ class HffPlugin_s(object):
         # MENU
         self.menu = QMenu("HFF")
         self.menu.addActions([self.actionSite])
-        
+        self.menu.addActions([self.actionPrint])
+        self.menu.addSeparator()
         self.menu.addSeparator()
         self.menu.addActions([self.actionEamena])
         
@@ -316,7 +336,12 @@ class HffPlugin_s(object):
         pluginGui = hff_system__Site(self.iface)
         pluginGui.show()
         self.pluginGui = pluginGui  # save
-        
+    
+    def runPrint(self):
+        pluginPrint = hff_PRINTMAP(self.iface)
+        pluginPrint.show()
+        self.pluginGui = pluginPrint  # save
+    
     
     def runEamena(self):
         pluginGui = Eamena(self.iface)
@@ -401,6 +426,9 @@ class HffPlugin_s(object):
         self.iface.removePluginMenu("HFF - Survey UW Archaeological GIS Tools", self.actionShipwreck)
         
         self.iface.removePluginMenu("HFF - Survey Terrestrial Archaeological GIS Tools", self.actionSite)
+        
+        self.iface.removePluginMenu("HFF - Survey Terrestrial Archaeological GIS Tools", self.actionPrint)    
+        
         self.iface.removePluginMenu("HFF - Survey Terrestrial Archaeological GIS Tools", self.actionEamena)
         
         self.iface.removePluginMenu("HFF - Media manager GIS Tools", self.actionimageViewer)

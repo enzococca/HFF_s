@@ -19,8 +19,10 @@
 """
 
 import os
+from os import path
 from os.path import expanduser
-
+import shutil
+import zipfile
 from builtins import object
 from builtins import str
 
@@ -40,7 +42,10 @@ class hff_system__Folder_installation(object):
         self.OS_UTILITY.create_dir(home_DB_path)
 
         self.installConfigFile(home_DB_path)
-
+        
+        home_bin_export_path = '{}{}{}'.format(self.HOME, os.sep, 'bin')
+        self.OS_UTILITY.create_dir(home_bin_export_path)
+        
         db_copy_from_path_rel = os.path.join(os.sep, 'dbfiles', 'hff_survey.sqlite')
         db_copy_from_path = '{}{}'.format(self.RESOURCES_PATH, db_copy_from_path_rel)
         db_copy_to_path = '{}{}{}'.format(home_DB_path, os.sep, 'hff_survey.sqlite')
@@ -119,3 +124,20 @@ class hff_system__Folder_installation(object):
         logo_copy_from_path_banner = '{}{}'.format(self.RESOURCES_PATH, logo_copy_from_path_rel_banner)
         logo_copy_to_path_banner = '{}{}{}'.format(path, os.sep, 'banner.png')
         self.OS_UTILITY.copy_file(logo_copy_from_path_banner, logo_copy_to_path_banner)
+        
+        home_bin_export_path = '{}{}{}'.format(self.HOME, os.sep, 'bin')
+        self.OS_UTILITY.create_dir(home_bin_export_path) 
+        
+        
+        profile_zip = os.path.join(os.sep, 'dbfiles', 'profile.zip')
+        profile_zip_copy_from_path = '{}{}'.format(self.RESOURCES_PATH, profile_zip)
+        test=os.path.join(home_bin_export_path,'profile')
+        if not os.path.exists(test):
+            with zipfile.ZipFile(profile_zip_copy_from_path, 'r') as zip_ref:
+                zip_ref.extractall(home_bin_export_path)
+        else:
+            pass
+        
+        
+        
+        
